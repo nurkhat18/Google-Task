@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      Google Task
+    </title>
+  </head>
+<body>
+  <input id="todo" type="text" />
+  <input id="date-picker" type="date"/>
+  <button onclick="addTodo()">Add Todo</button>
+  <div id="all-todos"></div>
+
+  <script>
+    // Module
+    let todos = [
+      {title:"Get groceries",dueDate: "2023-01-15", id:"B1"}, 
+      {title:"learn JavaScript", dueDate: "2023-01-25", id:"B2"}, 
+      {title:"watch TV", dueDate:"2023-01-20", id:"B3"}
+      ];
+
+    function add_Todo(title, dueDate, id){
+      todos.push({title: title, dueDate: dueDate, id: id});
+    }
+
+    function removeTodo(idToDelete){
+      todos = todos.filter(function (todo){
+        if (todo.id === idToDelete){
+          return false;
+        }
+        else{
+          return true;
+        }
+      })
+    }
+    
+    render();
+
+    // Control
+    function addTodo(){
+      const element = document.getElementById("todo");
+      const title = element.value;
+
+      const date_picker = document.getElementById("date-picker");
+      const dueDate = date_picker.value
+      const id =  "" + new Date().getTime();
+
+      add_Todo(title, dueDate, id);
+
+      render();
+    }
+
+    function deleteTodo(event){
+      const deleteButton = event.target;
+      const idToDelete = deleteButton.id;
+      
+      removeTodo(idToDelete)
+
+      render();
+    }
+
+    // Visual
+    function render(){
+      const all_todos = document.getElementById("all-todos");
+      all_todos.innerHTML ="";
+      todos.forEach(function(todo){
+        const element = document.createElement("div");
+        element.innerText = todo.title + " " + todo.dueDate;
+        const deleteButton = document.createElement("button");
+        deleteButton.innerHTML="delete";
+        deleteButton.style = "margin-left: 12px";
+        deleteButton.id = todo.id;
+
+        all_todos.appendChild(element);
+        element.appendChild(deleteButton);
+        deleteButton.onclick = deleteTodo;
+      })
+    }
+  </script>
+</body>
+</html>
